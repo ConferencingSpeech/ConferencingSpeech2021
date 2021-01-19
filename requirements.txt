@@ -1,0 +1,7 @@
+soundfile
+numpy
+pystoi
+pesq
+scipy
+pyrirgen
+librosa
