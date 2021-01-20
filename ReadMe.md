@@ -1,5 +1,5 @@
 
-#  Multi-channel conference Speech chanllenge
+#  ConferencingSpeech 2021 chanllenge
 
 This repository contains the datasets list and scripts required for the ConferencingSpeech challenge. For more details about the challenge, please see our (website)[https://tea-lab.qq.com/conferencingspeech-2021/#/]. 
 
