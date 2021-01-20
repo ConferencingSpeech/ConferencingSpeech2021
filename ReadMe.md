@@ -1,9 +1,8 @@
 
 #  ConferencingSpeech 2021 chanllenge
 
-This repository contains the datasets list and scripts required for the ConferencingSpeech challenge. For more details about the challenge, please see our (website)[https://tea-lab.qq.com/conferencingspeech-2021/#/]. 
+This repository contains the datasets list and scripts required for the ConferencingSpeech challenge. For more details about the challenge, please see our [website](https://tea-lab.qq.com/conferencingspeech-2021/#/). 
 
-[中文]('./simulation/ReadMe_cn.md')  [English]('./simulation/ReadMe_en.md')
 
 # Details
 - baseline, this folder contains baseline scripts include inference model exported by onnx and inference codes;
