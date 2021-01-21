@@ -1,8 +1,6 @@
 
 # Simulation set synthesis
 
-# [中文]("ReadMe_cn.md") 
-
 ## 1. The simulation rirs
 Parameter and path in configuration `tencent_challenge_rirgenerator.py` file
 
