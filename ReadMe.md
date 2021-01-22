@@ -19,7 +19,7 @@ This repository contains the datasets list and scripts required for the Conferen
     - `selected_lists/train/musan.name` wave utt name from MUSAN used in train set
     - `selected_lists/train/circle.name` circle wave utt name of train set 
     - `selected_lists/train/linear.name` linear wave utt name of train set
-- `simulation`, about simulation scripts,how to use to see [ReadMe](./simulation/ReadMe.md) 
+- `simulation`, about simulation scripts, how to use to see [ReadMe](./simulation/ReadMe.md) 
     - `simulation/mix_wav.py` simulate dev set and train set
     - `simulation/prepare.sh` use `selected_lists/*/*name` to select used wave from downloaded raw data, or you can select them by yourself scripts.
     - `simulation/quick_select.py` quickly select the name by a name list instead of `grep -r -f`
