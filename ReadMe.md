@@ -27,8 +27,8 @@ This repository contains the datasets list and scripts required for the Conferen
     - `simulation/data/dev_circle_simu_mix.config` dev circle set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
     - `simulation/data/dev_linear_simu_mix.config` dev linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
     - `simulation/data/train_circle_simu_mix.config` train circle set simulation setup, include clean wave, noise wave, snr, volume scale, start point 
-    - `simulation/data/train_linear_simu_mix.config` train linear set simulation setup, include clean wave, noise wave, snr, volume scale, start point 
-
+    - `simulation/data/train_linear_simu_mix.config` train linear set simulation setup, include clean wave, noise wave, snr, volume scale, start point.
+**note:** \*.config file should replace with correct path of used waves.
 - `requirements.txt`, dependency
 
 # Requirements
