@@ -17,8 +17,9 @@ def func(target, source):
     with open(target,'r') as fid:
         for line in fid:
             name = line.strip()
-            path = table[name]
-            print(path)
+            if name in table and os.path.isfile(path):
+                path = table[name]
+                print(path)
 
 def main():
     if len(sys.argv) != 3:
