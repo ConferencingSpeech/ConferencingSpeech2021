@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # arrowhyx@foxmail.com
+# do not forget to replace those path with correct path
 
-aishell_1='/home/work_nfs4_ssd/yxhu/data/simu/aishell_1/'
+aishell_1='/home/work_nfs4_ssd/yxhu/data/simu/aishell_1/' 
 aishell_3='/home/work_nfs4_ssd/yxhu/data/simu/aishell_3/'
 vctk='/home/work_nfs4_ssd/yxhu/data/simu/vctk/'
 librispeech='/home/work_nfs4_ssd/yxhu/data/simu/librispeech_360/'
