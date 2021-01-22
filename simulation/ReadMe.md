@@ -30,7 +30,7 @@ noise data:
 
 ### 2.2 Generate the list file and partition the training and checksum sets
 
-Configure the path to several datasets in './prepare. Sh '
+Configure the path to several datasets in `./prepare.sh`
 
 ```bash
 bash ./prepare.sh
@@ -41,7 +41,7 @@ bash ./prepare.sh
 
 Configure using the supplied parameters
 ```
-Attention to the data/[dev | "train"]_linear_mix. In the config file path is replaced with the corresponding path
+Attention to the data/[dev | train]_[linear|circle]_simu_mix.config . In the config file path should be replaced with the corresponding path.
 ```
 ```bash
 # dev set of linear mic array 
