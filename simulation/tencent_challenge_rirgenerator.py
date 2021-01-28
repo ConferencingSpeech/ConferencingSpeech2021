@@ -3,6 +3,8 @@
 """ Example for computing the RIR between several sources and receivers in GPU.
 @author: yhfu@npu-aslp.org
 
+pyrirgen: https://github.com/phecda-xu/RIR-Generator
+
 """
 
 import numpy as np
@@ -104,7 +106,7 @@ for i in range(num_room):
         matrix_1m = np.array([0.5, 0.5])
         matrix_5m = np.array([5.0, 5.0])
         if (distance>matrix_1m).all() and (distance<matrix_5m).all() and abs(angle[1] - angle[0])>20.0: #and abs(angle[2] - angle[0])>20.0 and abs(angle[2] - angle[1])>20.0:
-            wav_name = '/home/work_nfs/yhfu/workspace/rir/circle/' + \
+            wav_name = './tmp' + \
                        ('%.2f' % x) + '_' + ('%.2f' % y) + '_' + ('%.2f' % z) + '_' + \
                        ('%.2f' % distance[0]) + '_' + ('%.2f' % distance[1]) + '_' + \
                        ('%.4f' % angle[0]) + '_' + ('%.4f' % angle[1])+ '_' + ('%.4f' % T60) + '.wav'

@@ -39,7 +39,9 @@ python3.6 or above
 ```python 
 pip -r install requirements.txt
 ```
+if you simulation RIRs by yourself with our scripts, you may better install this:
 
+[pyrirgen](https://github.com/phecda-xu/RIR-Generator)
 
 # Code license 
 
