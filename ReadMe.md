@@ -45,4 +45,4 @@ if you simulation RIRs by yourself with our scripts, you may better install this
 
 # Code license 
 
-[Apache 2.0](./license)
+[Apache 2.0](./LICENSE)
