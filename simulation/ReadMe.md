@@ -5,7 +5,7 @@
 Parameter and path in configuration `tencent_challenge_rirgenerator.py` file
 
 ```bash 
-export LD_LIBRARY_PATH=/path/to/pyrirgen.cpython-37m-x86_64-linux-gnu.so:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/path/to/ConferencingSpeech2021/simulation/:$LD_LIBRARY_PATH
 python ./tencent_challenge_rirgenerator.py
 ```
 Please make sure that your Python version is higher than 3.6. If you use the supplied RIR, this step is not required.
