@@ -164,7 +164,7 @@ class Trainer(object):
         cpt_name = "{0}.pt.tar".format("best" if best else "last")
         th.save(cpt, self.checkpoint / cpt_name)
         self.reporter.log(f"save checkpoint {cpt_name}")
-        if self.save_period > 0 and epoch % self.save_checkpoint == 0:
+        if self.save_period > 0 and epoch % self.save_period == 0:
             th.save(cpt, self.checkpoint / f"{epoch}.pt.tar")
 
     def train(self, data_loader, epoch):
