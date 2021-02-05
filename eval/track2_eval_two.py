@@ -1,15 +1,12 @@
 '''
 
-for eval the model, pesq, stoi, si-sdr
+for eval the model, pesq, stoi, si-snr
 
 need to install pypesq: 
 https://github.com/ludlows/python-pesq
 
 pystoi:
 https://github.com/mpariente/pystoi
-
-si-sdr:
-kewang 
 
 '''
 
@@ -47,8 +44,8 @@ def pow_norm(s1, s2):
 
 
 def si_snr(estimated, original):
-    estimated = remove_dc(estimated)
-    original = remove_dc(original)
+    # estimated = remove_dc(estimated)
+    # original = remove_dc(original)
     target = pow_norm(estimated, original) * original / pow_np_norm(original)
     noise = estimated - target
     return 10 * np.log10(pow_np_norm(target) / pow_np_norm(noise))
@@ -83,26 +80,27 @@ def eval(ref_name, enh_name, nsy_name, results):
                     }])
 
 def main(args):
-    pathe=args.pathe#'/home/work_nfs3/yxhu/workspace/se-cldnn-torch/exp/cldnn_2_1_1_0.0005_16k_6_9/rec_wav/'
-    pathc=args.pathc#'/home/work_nfs2/yxhu/data/test3000_new_data_noisy/clean/'
-    pathn=args.pathn#'/home/work_nfs2/yxhu/data/test3000_new_data_noisy/wav/'
-    
+    enh_dir = args.enh_dir
+    mix_dir = args.mix_dir
+    ref_dir = args.ref_dir
+
     pool = mp.Pool(args.num_threads)
     mgr = mp.Manager()
     results = mgr.list()
+    lines = open(args.read_path).readlines()
     with open(args.result_list, 'w') as wfid:
-        with open(args.wav_list) as fid:
-            for line in fid:
-                name = line.strip()
-                pool.apply_async(
-                    eval,
-                    args=(
-                        pathc+name,
-                        pathe+name,
-                        pathn+name,
-                        results,
-                    )
-                    )
+        for line in lines:
+            line = line.strip()
+            file, kind, score = line.split()
+            pool.apply_async(
+                eval,
+                args=(
+                    os.path.join(ref_dir.format(kind),file),
+                    os.path.join(enh_dir.format(kind),file),
+                    os.path.join(mix_dir.format(kind),file),
+                    results,
+                )
+            )
         pool.close()
         pool.join()
         for eval_score in results:
@@ -124,36 +122,34 @@ def main(args):
 if __name__ =='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--wav_list',
+        '--read_path',
         type=str,
-        default='wav.lst'
+        default='read_path'
         ) 
-    
     parser.add_argument(
         '--result_list',
         type=str,
         default='result_list'
         ) 
-    
     parser.add_argument(
         '--num_threads',
         type=int,
-        default=12
+        default=16
         )
     parser.add_argument(
-        '--pathe',
+        '--enh_dir',
         type=str,
-        default='./rec'
+        default='enh_dir'
         )
     parser.add_argument(
-        '--pathc',
+        '--ref_dir',
         type=str,
-        default='/home/work_nfs2/yxhu/data/test3000_new_data_noisy/clean/'
+        default='ref_dir'
         )
     parser.add_argument(
-        '--pathn',
+        '--mix_dir',
         type=str,
-        default='/home/work_nfs2/yxhu/data/test3000_new_data_noisy/wav/'
+        default='mix_dir'
         )
     args = parser.parse_args()
     main(args)

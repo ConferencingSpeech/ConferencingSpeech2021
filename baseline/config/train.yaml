@@ -1,0 +1,74 @@
+# default conf
+
+# train
+train:
+  epoch: 200
+  early_stop: 10
+  checkpoint: ./exp/lstm_dnn_cirm
+  resume: 
+  use_cuda: True
+  save_period: -1
+  seed: 1234
+
+# nnet
+nnet_conf:
+  win_len: 320
+  win_inc: 160
+  fft_len: 512
+  win_type: hanning
+  num_bins: 257
+  ipd_num: 4
+  rnn_units: 512
+  rnn_layers: 3
+  bidirectional: False
+  ipd_index: 0,4;1,5;2,6;3,7
+  cos: True
+  sin: False
+
+# optimizer 
+optim:
+  name: adam  ### Adam, RMSprop, SGD
+  optimizer_kwargs:
+    lr: !!float 1.0e-3
+    weight_decay: !!float 1.0e-5
+    #momentum: 0
+  gradient_clip: 5.
+
+# scheduler
+scheduler:
+  min_lr: !!float 1.0e-8
+  patience: 1
+  factor: 0.5
+
+# logger
+logger:
+  path: 
+  print_freq: 100
+
+# dataloader:
+datasets:
+  train:
+    config_scp: ./wav_list/tr/linear_100.lst
+
+  val:
+    wav_scp: ./wav_list/cv/linear_20.lst
+    mix_dir: ./dev/simu_linear/mix
+    ref_dir: ./dev/simu_linear/ref
+
+  dataloader_setting:
+    train_chunk: 4
+    val_chunk: 6
+    other:
+      batch_size: 80
+      repeat: 1
+      num_workers: 16
+      sample_rate: 16000
+
+
+
+
+
+
+
+
+
