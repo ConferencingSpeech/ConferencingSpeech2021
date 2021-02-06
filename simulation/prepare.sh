@@ -11,6 +11,7 @@ musan='/home/work_nfs4_ssd/yxhu/data/simu/musan/'
 audioset='/home/work_nfs4_ssd/yxhu/data/simu/audioset/'
 linear='/home/yxhu/work_nfs4/data/simu_rirs/linear/'
 circle='/home/yxhu/work_nfs4/data/simu_rirs/circle/' 
+non_uniform='/home/yxhu/work_nfs4/data/simu_rirs/non_uniform/' 
 
 selected_lists_path='../selected_lists/'
 
@@ -44,7 +45,7 @@ grep -r -f ${selected_lists_path}/dev/clean.name /tmp/vctk >> ./data/dev_clean.l
 grep -r -f ${selected_lists_path}/dev/clean.name /tmp/aishell_3 >> ./data/dev_clean.lst
 
 #rir
-for name_path in ${linear} ${circle} ; do
+for name_path in ${linear} ${circle} ${non_uniform}; do
     name=`basename ${name_path}`
     find ${name_path} -iname "*.wav" >/tmp/${name} 
     echo $name
