@@ -41,7 +41,7 @@ This repository contains the datasets list and scripts required for the Conferen
 python3.6 or above
 
 ```python 
-pip -r install requirements.txt
+pip install -r requirements.txt
 ```
 if you simulation RIRs by yourself with our scripts, you may better install this:
 
