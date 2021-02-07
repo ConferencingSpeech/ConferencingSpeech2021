@@ -38,8 +38,7 @@ def rms(data):
 
 def snr(enh, noisy, eps=1e-8):
     noise = enh - noisy
-    return 10 * np.log10(rms(enh) / rms(noise))
-
+    return 10 * np.log10((rms(enh) + eps) / (rms(noise) + eps))
 
 def eval(enh_name, nsy_name, kind, results):
     try:

@@ -43,12 +43,12 @@ def pow_norm(s1, s2):
     return np.sum(s1 * s2)
 
 
-def si_snr(estimated, original):
+def si_snr(estimated, original, eps=1e-8):
     # estimated = remove_dc(estimated)
     # original = remove_dc(original)
     target = pow_norm(estimated, original) * original / pow_np_norm(original)
     noise = estimated - target
-    return 10 * np.log10(pow_np_norm(target) / pow_np_norm(noise))
+    return 10 * np.log10((pow_np_norm(target) + eps) / (pow_np_norm(noise) + eps))
 
 def eval(ref_name, enh_name, nsy_name, results):
     try:
