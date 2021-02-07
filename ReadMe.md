@@ -25,7 +25,7 @@ This repository contains the datasets list and scripts required for the Conferen
     - `simulation/mix_wav.py` simulate dev set and train set
     - `simulation/prepare.sh` use `selected_lists/*/*name` to select used wave from downloaded raw data, or you can select them by yourself scripts.
     - `simulation/quick_select.py` quickly select the name by a name list instead of `grep -r -f`
-    - `simulation/tencent_challenge_rirgenerator.py` the script to simulate RIRs in train and dev set
+    - `simulation/challenge_rirgenerator.py` the script to simulate RIRs in train and dev set
     - `simulation/data/dev_circle_simu_mix.config` dev circle set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
     - `simulation/data/dev_linear_simu_mix.config` dev linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
     - `simulation/data/dev_non_uniform_linear_simu_mix.config` dev non uniform linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point

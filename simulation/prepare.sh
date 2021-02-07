@@ -3,15 +3,15 @@
 # arrowhyx@foxmail.com
 # do not forget to replace those path with correct path
 
-aishell_1='/home/work_nfs4_ssd/yxhu/data/simu/aishell_1/' 
-aishell_3='/home/work_nfs4_ssd/yxhu/data/simu/aishell_3/'
-vctk='/home/work_nfs4_ssd/yxhu/data/simu/vctk/'
-librispeech='/home/work_nfs4_ssd/yxhu/data/simu/librispeech_360/'
-musan='/home/work_nfs4_ssd/yxhu/data/simu/musan/'
-audioset='/home/work_nfs4_ssd/yxhu/data/simu/audioset/'
-linear='/home/yxhu/work_nfs4/data/simu_rirs/linear/'
-circle='/home/yxhu/work_nfs4/data/simu_rirs/circle/' 
-non_uniform='/home/yxhu/work_nfs4/data/simu_rirs/non_uniform/' 
+aishell_1='/data/simu/aishell_1/' 
+aishell_3='/data/simu/aishell_3/'
+vctk='/data/simu/vctk/'
+librispeech='/data/simu/librispeech_360/'
+musan='/data/simu/musan/'
+audioset='/data/simu/audioset/'
+linear='/data/simu_rirs/linear/'
+circle='/data/simu_rirs/circle/' 
+non_uniform='/data/simu_rirs/non_uniform/' 
 
 selected_lists_path='../selected_lists/'
 

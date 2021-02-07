@@ -1,4 +1,5 @@
 .gitignore
 *bk*
 *tmp* 
-*pyc
+*pyc 
+*__pycache__*
