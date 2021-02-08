@@ -1,5 +1,5 @@
 # Details
-Preparation files before training and test:
+Preparation files before training and inference:
 
     1. Generate training configuration file "./wav_list/tr/linear_100.lst" (Because the full amount of data occupies too much space, so we mix them dynamicly when training) and "config_scp" parameter in the "./config/train.yaml". The format of the configuration file is as follows:
     
@@ -8,7 +8,7 @@ Preparation files before training and test:
     2. Generate dev wav list like "./wav_list/cv/linear_20.lst" and then put the dev data in the corresponding directory ./dev/xxx/{mix, ref}. After that, please modify the 
         "wav_scp", "mix_dir", "ref_dir" parameters in the "./config/train.yaml".
         
-    3. If you want to run the test code, please generate test wav list like "./wav_list/tt/linear_20.lst" and then modify the "file_name" parameter in the "./config/test.yaml".
+    3. If you want to run the test code, please generate inference wav list like "./wav_list/tt/linear_20.lst" and then modify the "file_name" parameter in the "./config/test.yaml".
 
 Training the model:
 
@@ -21,14 +21,14 @@ Test the model:
 
     1. If you want to adjust the path of the inferencing file, please modify the "./config/test.yaml" file.
     
-    2: Test Command
+    2: Inference Command
         python test.py -conf ./config/test.yaml
 
 In the train yaml file:
 
     conf['train']['checkpoint'] means the path to save experimental model
 
-In the test yaml file:
+In the inference yaml file:
 
     conf['test']['checkpoint'] means the path to load experimental model
     conf['save']['dir'] means the path to save generated wav
