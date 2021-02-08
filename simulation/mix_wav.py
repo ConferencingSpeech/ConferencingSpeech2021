@@ -157,24 +157,32 @@ def mix_noise(clean, noise, snr, channels=8):
     snr_noise = snr_mix(clean, noise, snr)
     return snr_noise
 
-def add_reverb(cln_wav, rir_wav, channels=8):
+def add_reverb(cln_wav, rir_wav, channels=8, predelay=50,sample_rate=16000):
     """
     add reverberation
     args:
         cln_wav: L
         rir_wav: L x C
-        rir_wav is always [Lr, C]
+        rir_wav is always [Lr, C] 
+        predelay is ms
     return:
         wav_tgt: L x C
     """
     rir_len = rir_wav.shape[0]
     wav_tgt = np.zeros([channels, cln_wav.shape[0] + rir_len-1])
+    dt = np.argmax(rir_wav, 0).min()
+    et = dt+(predelay*sample_rate)//1000 
+    et_rir = rir_wav[:et]
+    wav_early_tgt = np.zeros([channels, cln_wav.shape[0] + et_rir.shape[0]-1])
     for i in range(channels):
-        wav_tgt[i] = sps.oaconvolve(cln_wav, rir_wav[:, i])
+        wav_tgt[i] = sps.oaconvolve(cln_wav, rir_wav[:, i]) 
+        wav_early_tgt[i] = sps.oaconvolve(cln_wav, et_rir[:, i]) 
     # L x C
     wav_tgt = np.transpose(wav_tgt)
-    wav_tgt = wav_tgt[:cln_wav.shape[0]]
-    return wav_tgt
+    wav_tgt = wav_tgt[:cln_wav.shape[0]] 
+    wav_early_tgt = np.transpose(wav_early_tgt)
+    wav_early_tgt = wav_early_tgt[:cln_wav.shape[0]]
+    return wav_tgt, wav_early_tgt
 
 def get_one_spk_noise(clean, noise, snr, scale):
     """
@@ -193,7 +201,7 @@ def get_one_spk_noise(clean, noise, snr, scale):
     noisy_scale = 1. / max_amp * scale
     clean = clean * noisy_scale
     noisy = noisy * noisy_scale
-    return noisy, clean
+    return noisy, clean, noisy_scale
 
 def generate_data(clean_path, strat_time, noise_path, rir_path, snr, scale, segment_length=16000*4, channels=8):
     clean = get_firstchannel_read(clean_path)
@@ -220,14 +228,13 @@ def generate_data(clean_path, strat_time, noise_path, rir_path, snr, scale, segm
         skip = C//channels//2
         clean_rir = rir[:, :C//2:skip]   #every C//channels channels
         noise_rir = rir[:, C//2::skip]  #every C//channels channels 
-        print(C,channels)
     else:
         raise RuntimeError("Can not generate target channels data, please check data or parameters")
-    clean = add_reverb(clean, clean_rir, channels=channels)
-    noise = add_reverb(noise, noise_rir, channels=channels)
+    clean, clean_early = add_reverb(clean, clean_rir, channels=channels)
+    noise,_ = add_reverb(noise, noise_rir, channels=channels)
 
-    inputs, labels = get_one_spk_noise(clean, noise, snr, scale)
-    return inputs, labels
+    inputs, labels, noisy_scale = get_one_spk_noise(clean, noise, snr, scale)
+    return inputs, labels, clean_early*noisy_scale
 
 def preprocess_func(line, segment_length, result):
     try:
@@ -314,7 +321,7 @@ def mix_func(line, save_dir, chunk, sample_rate):
         segment_length = int(chunk * sample_rate)
         clean_path, start_time, noise_path, rir_path, snr, scale = line.split(' ')
         # L x C
-        inputs, labels = generate_data(clean_path, int(start_time), noise_path, rir_path, 
+        inputs, labels, noreverb_ref = generate_data(clean_path, int(start_time), noise_path, rir_path, 
                                 float(snr), float(scale), segment_length) 
         clean = os.path.basename(clean_path).replace('.wav', '')
         noise = os.path.basename(noise_path).replace('.wav', '')
@@ -322,7 +329,8 @@ def mix_func(line, save_dir, chunk, sample_rate):
         seg = '#'
         utt_id = clean + seg + noise + seg + rir + seg + start_time + seg + snr + seg + scale + '.wav'
         sf.write(os.path.join(save_dir, 'mix', utt_id), inputs, sample_rate)
-        sf.write(os.path.join(save_dir, 'ref', utt_id), labels, sample_rate)
+        sf.write(os.path.join(save_dir, 'reverb_ref', utt_id), labels, sample_rate)
+        sf.write(os.path.join(save_dir, 'noreverb_ref', utt_id), noreverb_ref, sample_rate)
     except :
         traceback.print_exc()
 
@@ -361,8 +369,10 @@ def main(args):
         os.makedirs(save_dir)
     if not os.path.isdir(os.path.join(save_dir, 'mix')):
         os.mkdir(os.path.join(save_dir, 'mix'))
-    if not os.path.isdir(os.path.join(save_dir, 'ref')):
+    if not os.path.isdir(os.path.join(save_dir, 'reverb_ref')):
         os.mkdir(os.path.join(save_dir, 'ref'))
+    if not os.path.isdir(os.path.join(save_dir, 'noreverb_ref')):
+        os.mkdir(os.path.join(save_dir, 'noreverb_ref'))
     if args.generate_config: 
         #if not os.path.exists(clean_chunk_path):
         print('LOG: preparing clean start time')

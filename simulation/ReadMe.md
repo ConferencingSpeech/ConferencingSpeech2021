@@ -55,4 +55,11 @@ Use the new parameter configuration
 ```bash 
 # dev set of linear mic array 
     python mix_wav.py --clean_wav_list=./data/dev_clean.lst --noise_wav_list=./data/dev_noise.lst --rir_wav_list=./data/dev_linear_rir.lst --mix_config_path=./data/dev_linear_simu_mix.config --save_dir=./data/wavs/dev/simu_linear --chunk_len=6 --generate_config=True 
+``` 
+the output of save_dir will include three folder:
+
+```bash
+mix\ # speech with reverberation and noise
+noreverb_ref\ # clean speech with  early reverberation (default 50ms)
+reverb_ref\ # clean speech with reverberation
 ```
