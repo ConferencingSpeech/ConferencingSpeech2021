@@ -37,7 +37,7 @@ This repository contains the datasets list and scripts required for the Conferen
 
 **Notes:** 
 
-    1. \*.config file should replace with correct path of used waves! 
+    1. \*.config file should be replaced with correct path of audio files.
     2. Training config files have been released together with challenge data.
 
 # Requirements
