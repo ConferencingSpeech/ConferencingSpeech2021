@@ -1,3 +1,4 @@
+# Details
 Preparation files before training and inference
     1. Generate train configuration file like "./wav_list/tr/linear_100.lst" (Because the full 
         amount of data occupies too much space, so we mix them dynamicly when training)
@@ -30,4 +31,6 @@ In the test yaml file:
     conf['test']['checkpoint'] means the path to load experimental model
     conf['save']['dir'] means the path to save generated wav
 
+# Code license 
 
+[Apache 2.0](../LICENSE)
