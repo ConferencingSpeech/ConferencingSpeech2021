@@ -33,7 +33,10 @@ This repository contains the datasets list and scripts required for the Conferen
     - `simulation/data/train_linear_simu_mix.config` train linear set simulation setup, include clean wave, noise wave, snr, volume scale, start point; please download it from dropbox.
     - `simulation/data/train_non_uniform_linear_simu_mix.config` train non uniform linear set simulation setup, include clean wave, noise wave, snr, volume scale, start point; please download it from dropbox.
 
-**note:** \*.config file should replace with correct path of used waves !
+**Notes:** 
+
+    1. \*.config file should replace with correct path of used waves! 
+    2. Training config files have been released together with challenge data.
 
 - `requirements.txt`, dependency
 
