@@ -2,16 +2,17 @@
 
 # arrowhyx@foxmail.com
 # do not forget to replace those path with correct path
+strorage_dir=$1
 
-aishell_1='/data/simu/aishell_1/' 
-aishell_3='/data/simu/aishell_3/'
-vctk='/data/simu/vctk/'
-librispeech='/data/simu/librispeech_360/'
-musan='/data/simu/musan/'
-audioset='/data/simu/audioset/'
-linear='/data/simu_rirs/linear/'
-circle='/data/simu_rirs/circle/' 
-non_uniform='/data/simu_rirs/non_uniform/' 
+aishell_1=$strorage_dir/source_datasets/aishell_1/
+aishell_3=$strorage_dir/source_datasets/aishell_3/
+vctk=$strorage_dir/source_datasets/vctk/
+librispeech=$strorage_dir/source_datasets/librispeech_360/
+musan=$strorage_dir/noise_datasets/musan/
+audioset=$strorage_dir/noise_datasets/audioset/
+linear=$strorage_dir/linear/
+circle=$strorage_dir/circle/
+non_uniform=$strorage_dir/non_uniform/
 
 selected_lists_path='../selected_lists/'
 
