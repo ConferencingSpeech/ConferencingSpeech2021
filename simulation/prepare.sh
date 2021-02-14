@@ -3,14 +3,14 @@
 # arrowhyx@foxmail.com
 # do not forget to replace those path with correct path
 
-aishell_1='/data/simu/aishell_1/' 
+aishell_1='/data/simu/aishell_1/'
 aishell_3='/data/simu/aishell_3/'
 vctk='/data/simu/vctk/'
 librispeech='/data/simu/librispeech_360/'
 musan='/data/simu/musan/'
 audioset='/data/simu/audioset/'
 linear='/data/simu_rirs/linear/'
-circle='/data/simu_rirs/circle/' 
+circle='/data/simu_rirs/circle/'
 non_uniform='/data/simu_rirs/non_uniform/' 
 
 selected_lists_path='../selected_lists/'
@@ -50,6 +50,7 @@ for name_path in ${linear} ${circle} ${non_uniform}; do
     find ${name_path} -iname "*.wav" >/tmp/${name} 
     echo $name
     for mode in train dev ; do        
-        grep -r -f ${selected_lists_path}/${mode}/${name}.name /tmp/${name} > ./data/${mode}_${name}_rir.lst
+        # grep -r -f ${selected_lists_path}/${mode}/${name}.name /tmp/${name} > ./data/${mode}_${name}_rir.lst
+        python ./quick_select.py ${selected_lists_path}/${mode}/${name}.name /tmp/${name} > ./data/${mode}_${name}_rir.lst
     done
 done

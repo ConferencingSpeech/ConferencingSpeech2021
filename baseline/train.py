@@ -15,6 +15,10 @@ from pathlib import Path
 
 import sys
 import os
+import warnings
+# for flatten_parameters() warning
+# https://discuss.pytorch.org/t/why-and-how-to-flatten-lstm-parameters/53799
+warnings.filterwarnings('ignore')
 
 from loader.fix_chunk_dataloader import make_fix_loader
 from loader.config_dataloader import make_config_loader
@@ -42,11 +46,20 @@ def make_optimizer(params, opt):
 
 def make_dataloader(opt):
     # make train's dataloader
-    train_dataloader = make_config_loader(
-        config_scp=opt['datasets']['train']['config_scp'],
-        chunk=opt['datasets']['dataloader_setting']['train_chunk'],
-        **opt['datasets']['dataloader_setting']['other'],
-    )
+    if opt['datasets']['train']['dynamic_mixing']:
+        train_dataloader = make_config_loader(
+            config_scp=opt['datasets']['train']['config_scp'],
+            chunk=opt['datasets']['dataloader_setting']['train_chunk'],
+            **opt['datasets']['dataloader_setting']['other'],
+        )
+    else:
+        train_dataloader = make_fix_loader(
+            wav_scp=opt['datasets']['train']['wav_scp'],
+            mix_dir=opt['datasets']['train']['mix_dir'],
+            ref_dir=opt['datasets']['train']['ref_dir'],
+            chunk=opt['datasets']['dataloader_setting']['train_chunk'],
+            **opt['datasets']['dataloader_setting']['other'],
+        )
 
     # make validation dataloader
     valid_dataloader = make_fix_loader(
@@ -99,12 +112,9 @@ def run(args):
         min_lr=conf['scheduler']['min_lr'],
         verbose=True)
 
-    device = th.device('cuda' if conf['train']['use_cuda'] and th.cuda.is_available() else 'cpu')
-
     trainer = Trainer(nnet,
                       optimizer,
                       scheduler,
-                      device,
                       conf)
     
     trainer.run(train_loader,
