@@ -8,7 +8,7 @@ import sys
 def func(target, source):
     
     table = {}
-    print(target, source)
+    # print(target, source)
     with open(source,'r') as fid:
         for line in fid:
             path = line.strip()
