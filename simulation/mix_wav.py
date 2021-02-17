@@ -370,7 +370,7 @@ def main(args):
     if not os.path.isdir(os.path.join(save_dir, 'mix')):
         os.mkdir(os.path.join(save_dir, 'mix'))
     if not os.path.isdir(os.path.join(save_dir, 'reverb_ref')):
-        os.mkdir(os.path.join(save_dir, 'ref'))
+        os.mkdir(os.path.join(save_dir, 'reverb_ref'))
     if not os.path.isdir(os.path.join(save_dir, 'noreverb_ref')):
         os.mkdir(os.path.join(save_dir, 'noreverb_ref'))
     if args.generate_config: 
