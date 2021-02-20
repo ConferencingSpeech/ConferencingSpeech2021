@@ -29,9 +29,9 @@ This repository contains the datasets list and scripts required for the Conferen
     - `simulation/data/dev_circle_simu_mix.config` dev circle set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
     - `simulation/data/dev_linear_simu_mix.config` dev linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
     - `simulation/data/dev_non_uniform_linear_simu_mix.config` dev non uniform linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point
-    - `simulation/data/train_circle_simu_mix.config` train circle set simulation setup, include clean wave, noise wave, snr, volume scale, start point; please download it from dropbox.
-    - `simulation/data/train_linear_simu_mix.config` train linear set simulation setup, include clean wave, noise wave, snr, volume scale, start point; please download it from dropbox.
-    - `simulation/data/train_non_uniform_linear_simu_mix.config` train non uniform linear set simulation setup, include clean wave, noise wave, snr, volume scale, start point; please download it from dropbox.
+    - `simulation/data/train_simu_circle.config` train circle set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point; please download it from dropbox.
+    - `simulation/data/train_simu_linear.config` train linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point; please download it from dropbox.
+    - `simulation/data/train_simu_non_uniform.config` train non uniform linear set simulation setup, include clean wave, noise wave, rir wave, snr, volume scale, start point; please download it from dropbox.
 
 - `requirements.txt`, dependency
 
