@@ -7,6 +7,7 @@ train:
   checkpoint: ./exp/lstm_dnn_cirm
   resume: 
   use_cuda: True
+  gpus: 0,1,2,3
   save_period: -1
   seed: 1234
 
@@ -48,12 +49,16 @@ logger:
 # dataloader:
 datasets:
   train:
-    config_scp: ./wav_list/tr/linear_100.lst
+    dynamic_mixing: False
+    config_scp: ./wav_list/tr/linear_config_100.lst
+    wav_scp: ./wav_list/tr/linear_100.lst
+    mix_dir: ./train/simu_linear/mix
+    ref_dir: ./train/simu_linear/reverb_ref
 
   val:
     wav_scp: ./wav_list/cv/linear_20.lst
     mix_dir: ./dev/simu_linear/mix
-    ref_dir: ./dev/simu_linear/ref
+    ref_dir: ./dev/simu_linear/reverb_ref
 
   dataloader_setting:
     train_chunk: 4

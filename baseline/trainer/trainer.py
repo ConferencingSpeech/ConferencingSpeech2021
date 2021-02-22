@@ -17,17 +17,20 @@ sys.path.append(
     os.path.dirname(__file__))
 from logger.logger import get_logger
 
-def load_obj(obj, device):
+def load_obj(obj, use_cuda):
     '''
     Offload tensor object in obj to cuda device
     '''
     def cuda(obj):
-        return obj.to(device) if isinstance(obj, th.Tensor) else obj
-    
+        if use_cuda:
+            return obj.cuda(non_blocking=True) if isinstance(obj, th.Tensor) else obj
+        else:
+            return obj
+
     if isinstance(obj, dict):
-        return {key: load_obj(obj[key], device) for key in obj}
+        return {key: load_obj(obj[key], use_cuda) for key in obj}
     elif isinstance(obj, list):
-        return [load_obj(val, device) for val in obj]
+        return [load_obj(val, use_cuda) for val in obj]
     else:
         return cuda(obj)
 
@@ -101,10 +104,10 @@ class Trainer(object):
                  nnet,
                  optimizer,
                  scheduler,
-                 device,
                  conf):
-        
-        self.default_device = device
+
+        self.gpus = [int(x) for x in conf['train']['gpus'].split(",")]
+        self.use_cuda = conf['train']['use_cuda'] and th.cuda.is_available() and len(self.gpus) > 0
 
         self.checkpoint = Path(conf['train']['checkpoint'])
         self.checkpoint.mkdir(exist_ok=True, parents=True)
@@ -136,11 +139,11 @@ class Trainer(object):
                 f"resume from checkpoint {conf['train']['resume']}: epoch {self.start_epoch:d}")
             # load nnet
             nnet.load_state_dict(cpt["model_state_dict"])
-            self.nnet = nnet.to(self.default_device)
+            self.nnet = nnet
             optimizer.load_state_dict(cpt["optim_state_dict"])
             self.optimizer = optimizer
         else:
-            self.nnet = nnet.to(self.default_device)
+            self.nnet = nnet
             self.optimizer = optimizer
         
         if conf['optim']['gradient_clip']:
@@ -174,11 +177,14 @@ class Trainer(object):
 
         for egs in data_loader:
             # load to gpu
-            egs = load_obj(egs, self.default_device)
+            egs = load_obj(egs, self.use_cuda)
             egs["mix"] = egs["mix"].contiguous()
             egs["ref"] = egs['ref'].contiguous()
             self.optimizer.zero_grad()
-            est = nn.parallel.data_parallel(self.nnet, (egs["mix"]))
+            if self.use_cuda:
+                est = nn.parallel.data_parallel(self.nnet.cuda(), (egs["mix"]), self.gpus, self.gpus[0])
+            else:
+                est = self.nnet(egs["mix"])
 
             loss = sisnr_loss(est["wav"], egs["ref"][:, 0])
             loss.backward()
@@ -197,22 +203,25 @@ class Trainer(object):
 
         with th.no_grad():
             for egs in data_loader:
-                egs = load_obj(egs, self.default_device)
+                egs = load_obj(egs, self.use_cuda)
                 egs["mix"] = egs["mix"].contiguous()
                 egs["ref"] = egs["ref"].contiguous()
-                est = nn.parallel.data_parallel(self.nnet, (egs["mix"]))
+
+                if self.use_cuda:
+                    est = nn.parallel.data_parallel(self.nnet.cuda(), (egs["mix"]), self.gpus, self.gpus[0])
+                else:
+                    est = self.nnet(egs["mix"])
 
                 loss = sisnr_loss(est["wav"], egs["ref"][:, 0])
                 self.reporter.add("loss", loss.item(), batch_num, epoch)
-    
+
     def run(self, train_loader, valid_loader, num_epoches=50):
         '''
         Run on whole training set and evaluate
         '''
         # make dilated conv faster
         th.backends.cudnn.benchmark = True
-        # avoid alloc memory grom gpu0
-        # th.cuda.set_device(self.default_device)
+        th.cuda.set_device('cuda:{}'.format(self.gpus[0]))
 
         e = self.start_epoch
         self.eval(valid_loader, e)
