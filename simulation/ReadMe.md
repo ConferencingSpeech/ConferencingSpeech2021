@@ -20,7 +20,7 @@ speech data:
 
 [librispeech-360](http://openslr.org/12/)
 
-[VCTK](https://doi.org/10.7488/ds/2645)
+[VCTK](https://datashare.ed.ac.uk/handle/10283/2651)
 
 
 noise data: 
