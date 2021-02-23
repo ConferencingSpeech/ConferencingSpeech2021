@@ -73,7 +73,7 @@ def clip_data(data, start, segment_length):
         padding to A_A_A
         """
         if data_len < segment_length//3:
-            data = np.pad(data, [0, segment_length//3 - data_len])
+            data = np.pad(data, [0, segment_length//3 - data_len], 'constant')
             tgt[:segment_length//3] += data
             st = segment_length//3
             tgt[st:st+data.shape[0]] += data
@@ -88,7 +88,7 @@ def clip_data(data, start, segment_length):
             # tgt[st:st+data_len] += data
             # st = segment_length//2 + (segment_length - data_len) % 173
             # tgt[st:st+data_len] += data
-            data = np.pad(data, [0, segment_length//2 - data_len])
+            data = np.pad(data, [0, segment_length//2 - data_len], 'constant')
             tgt[:segment_length//2] += data
             st = segment_length//2
             tgt[st:st+data.shape[0]] += data
@@ -316,7 +316,7 @@ def get_mix_config(clean_chunk_path, noise_path, rir_path, config_path, snr_rang
         idx = idx + 1
     wid.close() 
 
-def mix_func(line, save_dir, chunk, sample_rate):
+def mix_func(line, save_dir, chunk, sample_rate, result):
     try:
         segment_length = int(chunk * sample_rate)
         clean_path, start_time, noise_path, rir_path, snr, scale = line.split(' ')
@@ -331,6 +331,7 @@ def mix_func(line, save_dir, chunk, sample_rate):
         sf.write(os.path.join(save_dir, 'mix', utt_id), inputs, sample_rate)
         sf.write(os.path.join(save_dir, 'reverb_ref', utt_id), labels, sample_rate)
         sf.write(os.path.join(save_dir, 'noreverb_ref', utt_id), noreverb_ref, sample_rate)
+        result.append(utt_id.replace('.wav', ''))
     except :
         traceback.print_exc()
 
@@ -340,20 +341,25 @@ def get_data(config_path, save_dir, chunk=4, sample_rate=16000, num_process=12):
     '''
     lines = open(config_path, 'r')
     
-    idx = 0
     pool = mp.Pool(num_process)
+    mgr = mp.Manager()
+    result = mgr.list()
+
     for line in lines:
-        # print('idx: ', idx)
         line = line.strip()
         # multiprocessing
         pool.apply_async(
                 mix_func,
-                args=(line, save_dir, chunk, sample_rate)
+                args=(line, save_dir, chunk, sample_rate, result)
             )
-        idx = idx + 1
     pool.close()
     pool.join()
-    lines.close() 
+    scp_path = os.path.basename(config_path)
+    wid = open(os.path.join(save_dir, scp_path), 'w')
+    for item in result:
+        wid.write(item + "\n")
+    wid.close()
+    lines.close()
 
 def main(args):
     clean_path = args.clean_wav_list 
@@ -370,7 +376,7 @@ def main(args):
     if not os.path.isdir(os.path.join(save_dir, 'mix')):
         os.mkdir(os.path.join(save_dir, 'mix'))
     if not os.path.isdir(os.path.join(save_dir, 'reverb_ref')):
-        os.mkdir(os.path.join(save_dir, 'ref'))
+        os.mkdir(os.path.join(save_dir, 'reverb_ref'))
     if not os.path.isdir(os.path.join(save_dir, 'noreverb_ref')):
         os.mkdir(os.path.join(save_dir, 'noreverb_ref'))
     if args.generate_config: 

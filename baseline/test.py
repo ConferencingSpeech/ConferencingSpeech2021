@@ -48,6 +48,8 @@ def run(args):
     nnet.load_state_dict(cpt["model_state_dict"])
     nnet = nnet.to(device)
     nnet.eval()
+    if not os.path.isdir(conf['save']['dir']):
+        os.makedirs(conf['save']['dir'])
 
     with th.no_grad():
         for egs in tqdm(data_reader):

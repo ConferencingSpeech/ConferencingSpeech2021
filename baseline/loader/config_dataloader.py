@@ -63,7 +63,7 @@ def clip_data(data, start, segment_length):
         padding to A_A_A
         """
         if data_len < segment_length//3:
-            data = np.pad(data, [0, segment_length//3 - data_len])
+            data = np.pad(data, [0, segment_length//3 - data_len], 'constant')
             tgt[:segment_length//3] += data
             st = segment_length//3
             tgt[st:st+data.shape[0]] += data
@@ -74,7 +74,7 @@ def clip_data(data, start, segment_length):
             """
             padding to A_A
             """
-            data = np.pad(data, [0, segment_length//2 - data_len])
+            data = np.pad(data, [0, segment_length//2 - data_len], 'constant')
             tgt[:segment_length//2] += data
             st = segment_length//2
             tgt[st:st+data.shape[0]] += data
