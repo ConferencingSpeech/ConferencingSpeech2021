@@ -1,9 +1,14 @@
 '''
-for eval the model, pesq, stoi, si-snr
+
+for eval the model, pesq, stoi, estoi, si-sdr
+
 need to install pypesq: 
 https://github.com/ludlows/python-pesq
+
 pystoi:
 https://github.com/mpariente/pystoi
+
+
 '''
 
 import soundfile as sf
@@ -63,6 +68,8 @@ def eval(ref_name, enh_name, nsy_name, results):
         enh_score = pesq(sr,ref, enh, 'wb')
         ref_stoi = stoi(ref, nsy, sr, extended=False)
         enh_stoi = stoi(ref, enh, sr, extended=False)
+        ref_estoi = stoi(ref, nsy, sr, extended=True)
+        enh_estoi = stoi(ref, enh, sr, extended=True)
         ref_sisdr = si_snr(nsy, ref)
         enh_sisdr = si_snr(enh, ref)
 
@@ -71,11 +78,13 @@ def eval(ref_name, enh_name, nsy_name, results):
     
     results.append([utt_id, 
                     {'pesq':[ref_score, enh_score],
-                     'stoi':[ref_stoi,enh_stoi],
+                     'stoi':[ref_stoi, enh_stoi],
+                     'estoi':[ref_estoi, enh_estoi],
                      'si_sdr':[ref_sisdr, enh_sisdr],
                     }])
 
 def main(args):
+    # print(args)
     pathe=args.pathe
     pathc=args.pathc
     pathn=args.pathn
@@ -102,12 +111,16 @@ def main(args):
             utt_id, score = eval_score
             pesq = score['pesq']
             stoi = score['stoi']
+            estoi = score['estoi']
             si_sdr = score['si_sdr']
             wfid.writelines(
                     '{:s},{:.3f},{:.3f}, '.format(utt_id, pesq[0],pesq[1])
                 )
             wfid.writelines(
                     '{:.3f},{:.3f}, '.format(stoi[0],stoi[1])
+                )
+            wfid.writelines(
+                    '{:.3f},{:.3f}, '.format(estoi[0],estoi[1])
                 )
             wfid.writelines(
                     '{:.3f},{:.3f}\n'.format(si_sdr[0],si_sdr[1])
