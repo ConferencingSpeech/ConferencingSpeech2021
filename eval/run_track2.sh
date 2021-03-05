@@ -1,7 +1,9 @@
+#!/bin/bash
+
 tmp_path='./tmp/tmp_track2'
-enh_dir='/data/track2/new_{}/'
-ref_dir='/data/simu_task2/dev_task2/{}/ref/'
-mix_dir='/data/simu_task2/dev_task2/{}/mix/'
+enh_dir='/path/track2/{}/'
+ref_dir='/data/wavs/dev/dev_simu_{}_track2/reverb_ref/'
+mix_dir='/data/wavs/dev/dev_simu_{}_track2/mix/'
 result_list='./result/track2_result.csv'
 
 python track2_eval.py \

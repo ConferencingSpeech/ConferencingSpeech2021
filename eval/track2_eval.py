@@ -1,12 +1,13 @@
 '''
 
-for eval the model, pesq, stoi, si-snr
+for eval the model, pesq, stoi, estoi, si-sdr
 
 need to install pypesq: 
 https://github.com/ludlows/python-pesq
 
 pystoi:
 https://github.com/mpariente/pystoi
+
 
 '''
 
@@ -40,6 +41,7 @@ def snr(enh, noisy, eps=1e-8):
     noise = enh - noisy
     return 10 * np.log10((rms(enh) + eps) / (rms(noise) + eps))
 
+
 def eval(enh_name, nsy_name, kind, results):
     try:
         utt_id = enh_name.split('/')[-1]
@@ -51,12 +53,12 @@ def eval(enh_name, nsy_name, kind, results):
             enh = enh[:nsy_len]
         else:
             nsy = nsy[:enh_len]
-        enh_sisdr = snr(enh, nsy)
+        enh_snr = snr(enh, nsy)
 
     except Exception as e:
         print(e)
     
-    results.append([kind, utt_id, enh_sisdr])
+    results.append([kind, utt_id, enh_snr])
 
 def main(args):
     enh_dir = args.enh_dir
@@ -66,7 +68,7 @@ def main(args):
     mgr = mp.Manager()
     results = mgr.list()
     with open(args.write_path, 'w') as wfid:
-        for item in ['simu_circular', 'simu_linear_nonuniform', 'simu_linear_uniform']:
+        for item in ['circular', 'linear_nonuniform', 'linear_uniform']:
             pathe = enh_dir.format(item)
             pathn = mix_dir.format(item)
             files = os.listdir(pathe)

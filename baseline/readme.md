@@ -12,6 +12,9 @@ Preparation files before training and inference:
         
     3. If you want to run the test code, please generate inference wav list like "./wav_list/tt/linear_20.lst" and then modify the "file_name" parameter in the "./config/test.yaml".
        The test config file only contains basename of data.
+       
+    4. All file in "wav_list" folder is just a sample for you to run the baseline scripts. If you want to reproduce the baseline result, please use "train_simu_{circle, linear, 
+        non_uniform}.config" in dropbox
 
 Training the model:
 
