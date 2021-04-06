@@ -40,6 +40,15 @@ This repository contains the datasets list and scripts required for the Conferen
     1. \*.config file should be replaced with correct path of audio files.
     2. Training config files have been released together with challenge data.
 
+# Citation
+If you use this challenge dataset and baseline system in a publication, please cite the following paper:
+
+@article{wei2021interspeech,
+  title={{INTERSPEECH 2021 ConferencingSpeech Challenge: Towards Far-field Multi-Channel Speech Enhancement for Video Conferencing}},
+  author={Wei Rao and Yihui Fu and Yanxin Hu and Xin Xu and Yvkai Jv and Jiangyu Han and Zhongjie Jiang and Lei Xie and Yannan Wang and Shinji Watanabe and Zheng-Hua Tan and Hui Bu and Tao Yu and Shidong Shang},
+  journal={arXiv preprint arXiv:2104.00960}
+}
+
 # Requirements
 python3.6 or above
 
